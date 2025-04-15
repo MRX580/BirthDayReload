@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PlayerData {
@@ -42,6 +43,7 @@ public class PlayerData {
     public List<String> getWished() {
         return Wished;
     }
+    public void setWishes(String wishes) { this.Wished = Collections.singletonList(wishes); }
 
     public boolean isWished() {
         return isWished;

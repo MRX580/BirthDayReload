@@ -23,7 +23,7 @@ Discord:
       color: "#ffffff"
       message:
         - "Gave his birthday: %date%"
-        - "Wishes: "
+        - "Wishes: %wishes%"
     happy-birthday:
       enable: true
       title: "%player%"
@@ -40,7 +40,8 @@ Discord:
 
 Messages:
   user-no-enter-data: "<red>You haven't specified your birthday. Use <yellow>/birthday set <yyyy-mm-dd></yellow></red>"
-  birthday-set-success: "<green>Your birthday has been set to: <bold>%date%</bold></green>"
+  birthday-set-success: "<green>Your birthday is set and your wishes are saved</green>"
+  birthday-enter-wishes: "<orange>Enter your birthday wishes</orange>"
   birthday-set-future-error: "<red>Invalid date. The birthday cannot be in the future.</red>"
   birthday-set-format-error: "<red>Invalid date format. Use <bold>%data%</bold>.</red>"
   birthday-delete-no-permission: "<red>You don't have permission to use this command.</red>"
