@@ -200,10 +200,8 @@ public class MainCommand extends AbstractCommand {
         }
 
         if (sender instanceof Player player) {
-            log("Sending message to player: " + player.getName());
             player.sendMessage(message);
         } else {
-            log("Sending message to console...");
             String serializedMessage = LegacyComponentSerializer.legacySection().serialize(message);
             sender.sendMessage(serializedMessage);
         }

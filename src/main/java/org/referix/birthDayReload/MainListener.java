@@ -95,7 +95,6 @@ public class MainListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         PlayerManager.getInstance().savePlayerData(player);
-        log("Player data saved for: " + player.getName());
     }
 
     //custom head present

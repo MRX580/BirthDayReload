@@ -18,29 +18,39 @@ public class PlayerDataDAO {
 
     public void savePlayerData(PlayerData data) {
         jdbi.useHandle(handle -> {
+            String birthdayStr = (data.getBirthday() != null) ? data.getBirthday().toString() : null;
             handle.createUpdate("INSERT INTO player_data (player_uuid, birthday, is_wished, wished) " +
                             "VALUES (:uuid, :birthday, :isWished, :wished) " +
                             "ON CONFLICT(player_uuid) DO UPDATE SET " +
                             "birthday = :birthday, is_wished = :isWished, wished = :wished")
                     .bind("uuid", data.getPlayer().getUniqueId().toString())
-                    .bind("birthday", data.getBirthday().toString())
+                    .bind("birthday", birthdayStr)
                     .bind("isWished", data.isWished() ? 1 : 0)
                     .bind("wished", String.join(",", data.getWished()))
                     .execute();
         });
     }
 
+
     public Optional<PlayerData> loadPlayerData(Player player) {
         return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM player_data WHERE player_uuid = :uuid")
                 .bind("uuid", player.getUniqueId().toString())
-                .map((rs, ctx) -> new PlayerData(
-                        player,
-                        LocalDate.parse(rs.getString("birthday")),
-                        rs.getInt("is_wished") == 1,
-                        List.of(rs.getString("wished").split(",")), null
-                ))
+                .map((rs, ctx) -> {
+                    String birthdayString = rs.getString("birthday");
+                    LocalDate birthday = (birthdayString != null && !birthdayString.isEmpty())
+                            ? LocalDate.parse(birthdayString)
+                            : null;
+                    return new PlayerData(
+                            player,
+                            birthday,
+                            rs.getInt("is_wished") == 1,
+                            List.of(rs.getString("wished").split(",")),
+                            null
+                    );
+                })
                 .findOne());
     }
+
 
     public void deletePlayerData(Player player) {
         jdbi.useHandle(handle -> handle.execute("DELETE FROM player_data WHERE player_uuid = ?", player.getUniqueId().toString()));
@@ -51,12 +61,18 @@ public class PlayerDataDAO {
         return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM player_data")
                 .map((rs, ctx) -> {
                     Player player = Bukkit.getPlayer(java.util.UUID.fromString(rs.getString("player_uuid")));
+                    String birthdayString = rs.getString("birthday");
+                    LocalDate birthday = (birthdayString != null && !birthdayString.isEmpty())
+                            ? LocalDate.parse(birthdayString)
+                            : null;
                     return new PlayerData(
                             player,
-                            LocalDate.parse(rs.getString("birthday")),
+                            birthday,
                             rs.getInt("is_wished") == 1,
-                            List.of(rs.getString("wished").split(",")), null
+                            List.of(rs.getString("wished").split(",")),
+                            null
                     );
                 }).list());
     }
+
 }
