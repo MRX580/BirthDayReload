@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -94,7 +95,6 @@ public class MainListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         PlayerManager.getInstance().savePlayerData(player);
-        log("Player data saved for: " + player.getName());
     }
 
     //custom head present
@@ -124,9 +124,6 @@ public class MainListener implements Listener {
         }
     }
 
-
-
-
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
@@ -155,6 +152,20 @@ public class MainListener implements Listener {
                 launchFireworks(center.clone().add(0, 0, -1));
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        if (!PlayerManager.getInstance().isWaitingForWishes(player.getUniqueId())) return;
+        event.setCancelled(true);
+        String wishes = event.getMessage();
+        PlayerData data = PlayerManager.getInstance().getPlayerData(player);
+        data.setWishes(wishes);
+        PlayerManager.getInstance().savePlayerData(player);
+        discordHttp.sendSetBirthdayMessage(player.getName(), data.getBirthday().toString(), wishes);
+        PlayerManager.getInstance().removeWaitingForWishes(player.getUniqueId());
+        player.sendMessage(messageManager.BIRTHDAY_SET_SUCCESS);
     }
 
     private void launchFireworks(Location loc) {

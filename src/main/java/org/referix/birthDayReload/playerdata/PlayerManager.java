@@ -6,19 +6,29 @@ import org.referix.birthDayReload.database.Database;
 import org.referix.birthDayReload.database.PlayerDataDAO;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerManager {
 
     private static final PlayerManager instance = new PlayerManager();
     private final Map<String, PlayerData> playerDataMap = new HashMap<>();
     private final PlayerDataDAO dao = new PlayerDataDAO(Database.getJdbi());
+    private final Set<UUID> waitingForWishes = new HashSet<>();
 
     public static PlayerManager getInstance() {
         return instance;
+    }
+
+    public void addWaitingForWishes(UUID uuid) {
+        waitingForWishes.add(uuid);
+    }
+
+    public boolean isWaitingForWishes(UUID uuid) {
+        return waitingForWishes.contains(uuid);
+    }
+
+    public void removeWaitingForWishes(UUID uuid) {
+        waitingForWishes.remove(uuid);
     }
 
     public PlayerData getPlayerData(Player player) {

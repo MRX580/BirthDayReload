@@ -30,28 +30,24 @@ public class DiscordHttp {
         this.config = config;
     }
 
-    public void sendSetBirthdayMessage(String player, String date) {
+    public void sendSetBirthdayMessage(String player, String date, String wishes) {
         if (!config.isEnableSetBirthdayMessage()) return;
-        if (!enabled) {
-            return;
-        }
+        if (!enabled) return;
 
-        // Форматування дати у більш простий формат
         String formattedDate = formatDate(date);
 
         String title = config.getSetBirthdayTitle().replace("%player%", player);
         String description = String.join("\n", config.getSetBirthdayMessage())
                 .replace("%player%", player)
                 .replace("%date%", formattedDate)
-                .replace("\n", "\\n"); // Заміняємо символи нового рядка
-
+                .replace("%wishes%", wishes)
+                .replace("\n", "\\n");
 
         int color = parseColor(config.getSetBirthdayColor());
 
-
-
         sendEmbedMessage(title, description, color);
     }
+
 
     // Відправлення повідомлення "Happy Birthday"
     public void sendHappyBirthdayMessage(String player) {

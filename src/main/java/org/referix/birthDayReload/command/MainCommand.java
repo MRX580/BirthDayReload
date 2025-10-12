@@ -117,14 +117,11 @@ public class MainCommand extends AbstractCommand {
             LocalDate birthday = messageManager.parseDate(dateInput);
             if (isValidBirthday(birthday)) {
                 data.setBirthday(birthday);
-                PlayerManager.getInstance().savePlayerData(player);
+                PlayerManager playerManager = PlayerManager.getInstance();
+                playerManager.savePlayerData(player);
 
-                sendMessage(player, messageManager.BIRTHDAY_SET_SUCCESS
-                        .replaceText(builder -> builder.match("%date%")
-                                .replacement(messageManager.formatDate(birthday))));
-
-                if (discordHttp != null) discordHttp.sendSetBirthdayMessage(player.getName(),data.getBirthday().toString());
-
+                playerManager.addWaitingForWishes(player.getUniqueId());
+                player.sendMessage(messageManager.BIRTHDAY_ENTER_WISHES);
 
             } else {
                 sendMessage(player, messageManager.BIRTHDAY_SET_FUTURE_ERROR);
@@ -203,10 +200,8 @@ public class MainCommand extends AbstractCommand {
         }
 
         if (sender instanceof Player player) {
-            log("Sending message to player: " + player.getName());
             player.sendMessage(message);
         } else {
-            log("Sending message to console...");
             String serializedMessage = LegacyComponentSerializer.legacySection().serialize(message);
             sender.sendMessage(serializedMessage);
         }

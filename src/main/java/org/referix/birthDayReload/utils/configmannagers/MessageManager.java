@@ -17,6 +17,7 @@ public class MessageManager {
     public Component BIRTHDAY_BOY_PREFIX;
     public Component USER_NO_ENTER_DATA;
     public Component BIRTHDAY_SET_SUCCESS;
+    public Component BIRTHDAY_ENTER_WISHES;
     public Component BIRTHDAY_SET_FUTURE_ERROR;
     public Component BIRTHDAY_SET_FORMAT_ERROR;
     public Component BIRTHDAY_DELETE_NO_PERMISSION;
@@ -46,6 +47,7 @@ public class MessageManager {
         BIRTHDAY_BOY_PREFIX = logComponentLoad("Birthday-boy-prefix");
         USER_NO_ENTER_DATA = logComponentLoad("Messages.user-no-enter-data");
         BIRTHDAY_SET_SUCCESS = logComponentLoad("Messages.birthday-set-success");
+        BIRTHDAY_ENTER_WISHES = logComponentLoad("Messages.birthday-enter-wishes");
         BIRTHDAY_SET_FUTURE_ERROR = logComponentLoad("Messages.birthday-set-future-error");
         BIRTHDAY_SET_FORMAT_ERROR = logComponentLoad("Messages.birthday-set-format-error");
         BIRTHDAY_DELETE_NO_PERMISSION = logComponentLoad("Messages.birthday-delete-no-permission");
