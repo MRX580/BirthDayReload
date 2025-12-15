@@ -3,7 +3,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1' // Плагін для shading
 }
 
-group = 'org.referix'
+group = 'org.degree'
 version = '1.0.0'
 
 repositories {
@@ -78,10 +78,10 @@ shadowJar {
     minimize()
     exclude 'org/sqlite/native/**'
 
-    // Переносим все зависимости в пространство имен org.referix.libs
-    relocate 'org.jdbi', 'org.referix.libs.jdbi'
-    relocate 'org.sqlite', 'org.referix.libs.sqlite'
-    relocate 'org.bstats', 'org.referix.libs.bstats'
+    // Переносим все зависимости в пространство имен org.degree.libs
+    relocate 'org.jdbi', 'org.degree.libs.jdbi'
+    relocate 'org.sqlite', 'org.degree.libs.sqlite'
+    relocate 'org.bstats', 'org.degree.libs.bstats'
 }
 
 
